@@ -3,6 +3,8 @@ from starlette.middleware.cors import CORSMiddleware
 
 from src.api.v1.urls import router
 from src.core.config import settings
+from src.db.init_db import init_db
+from src.db.session import SessionLocal
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -17,6 +19,11 @@ if settings.BACKEND_CORS_ORIGINS:
         allow_methods=['*'],
         allow_headers=['*']
     )
+
+db = SessionLocal()
+init_db(db)
+print("Connected to Database")
+
 
 app.include_router(router, prefix=settings.API_V1_STR)
 

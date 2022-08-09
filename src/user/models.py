@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Boolean, Column, String, Integer, Date, ForeignKey
+from sqlalchemy import Boolean, Column, String, Integer, Date, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
 from src.core.models import CreateInfoMixIn
@@ -17,8 +17,9 @@ class User(CreateInfoMixIn):
     password = Column(String(20), nullable=False)
     is_active = Column(Boolean(), default=False)
     is_superuser = Column(Boolean(), default=False)
-    groups = relationship("CustomGroup", backref="user")
-    user_details = relationship("UserDetails", back_populates="user")
+    groups = relationship("CustomGroup",
+                          secondary='usergrouprelation',
+                          back_populates="user", cascade="all, delete")
 
 
 class UserDetails(CreateInfoMixIn):
@@ -31,4 +32,10 @@ class UserDetails(CreateInfoMixIn):
     birthday = Column(Date)
     gender = Column(String)
     photo = Column(String)
-    user = relationship("User", back_populates="user_details")
+    user = Column(ForeignKey('user.id'), nullable=True)
+
+
+class UserGroupRelation(Base):
+    user_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
+
+    group_id = Column(Integer, ForeignKey('customgroup.id'), primary_key=True)

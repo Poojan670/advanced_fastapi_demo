@@ -80,7 +80,7 @@ Setup an .env file with following sample
 DB_HOST=
 DB_USER=
 DB_PASSWORD=
-DB=
+DB_NAME=
 
 # Backend
 
