@@ -3,8 +3,7 @@ from typing import Any
 from fastapi import APIRouter, Depends
 from pydantic.networks import EmailStr
 
-from src.custom_lib.functions import get_current_active_superuser
-from src.custom_lib.utils import send_test_email
+from src.custom_lib.functions import get_current_active_superuser, send_test_email
 from src.user.models import User
 from src.user.schemas import Message
 from .celery import celery_app

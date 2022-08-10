@@ -21,14 +21,15 @@ def init_db(db: Session) -> None:
 
     username_test = get_user_by_username(db, username=settings.FIRST_SUPERUSER_USERNAME)
     email_test = get_user_by_email(db, email=settings.FIRST_SUPERUSER_EMAIL)
-    if not username_test and email_test:
+    if not username_test and not email_test:
         request = schemas.UserBase(
-            username=settings.FIRST_SUPERUSER,
-            email=settings.EMAIL_TEST_USER,
+            username=settings.FIRST_SUPERUSER_USERNAME,
+            email=settings.FIRST_SUPERUSER_EMAIL,
             password=settings.FIRST_SUPERUSER_PASSWORD,
             is_active=True,
             is_superuser=True,
         )
+        print("Saving superuser")
         user = User(
             username=request.username,
             email=request.email,

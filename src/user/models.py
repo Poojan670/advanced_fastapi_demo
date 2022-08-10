@@ -11,9 +11,10 @@ if TYPE_CHECKING:
 
 
 class User(CreateInfoMixIn):
-    id = Column(None, ForeignKey('createinfomixin.id'), primary_key=True, autoincrement=True)
-    username = Column(String(10), nullable=False)
-    email = Column(String(20), nullable=False)
+    __tablename__ = 'users'
+    id = Column(Integer, ForeignKey('createinfomixin.id'), primary_key=True)
+    username = Column(String(10), nullable=False, unique=True)
+    email = Column(String(20), nullable=False, unique=True)
     password = Column(String(20), nullable=False)
     is_active = Column(Boolean(), default=False)
     is_superuser = Column(Boolean(), default=False)
@@ -23,7 +24,7 @@ class User(CreateInfoMixIn):
 
 
 class UserDetails(CreateInfoMixIn):
-    id = Column(None, ForeignKey('createinfomixin.id'), primary_key=True, autoincrement=True)
+    id = Column(Integer, ForeignKey('createinfomixin.id'), primary_key=True)
     first_name = Column(String(20))
     middle_name = Column(String, nullable=True)
     last_name = Column(String(20))
@@ -32,10 +33,10 @@ class UserDetails(CreateInfoMixIn):
     birthday = Column(Date)
     gender = Column(String)
     photo = Column(String)
-    user = Column(ForeignKey('user.id'), nullable=True)
+    user = Column(ForeignKey('users.id'), nullable=True)
 
 
 class UserGroupRelation(Base):
-    user_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
 
     group_id = Column(Integer, ForeignKey('customgroup.id'), primary_key=True)

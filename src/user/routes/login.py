@@ -7,11 +7,9 @@ from sqlalchemy.orm import Session
 
 from src.core.config import settings
 from src.core.security import get_hash_password, create_access_token
-from src.custom_lib.functions import get_db, get_current_user
-from src.custom_lib.utils import (
-    generate_password_reset_token, send_reset_password_email,
-    verify_password_reset_token
-)
+from src.custom_lib.functions import (get_db, get_current_user,
+                                      generate_password_reset_token, send_reset_password_email,
+                                      verify_password_reset_token)
 from src.user import schemas
 from src.user.models import User
 from src.user.repo.user import get_user_by_email, authenticate, is_active
@@ -19,7 +17,7 @@ from src.user.repo.user import get_user_by_email, authenticate, is_active
 router = APIRouter()
 
 
-@router.post("/login/access-token", response_model=schemas.Token)
+@router.post("/login", response_model=schemas.Token)
 def login_access_token(
         db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()
 ) -> Any:
@@ -50,7 +48,7 @@ def test_token(current_user: User = Depends(get_current_user)) -> Any:
     return current_user
 
 
-@router.post("/password-recovery/{email}", response_model=schemas.Message)
+@router.get("/recover-password/{email}", response_model=schemas.Message)
 def recover_password(email: str, db: Session = Depends(get_db)) -> Any:
     """
     Password Recovery

@@ -39,4 +39,4 @@ class CustomGroup(BaseModel):
     remarks: Field(..., max_length=50, example="Remarks for group")
 
     class Config:
-        orm_mode =True
+        orm_mode = True

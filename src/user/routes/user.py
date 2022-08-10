@@ -4,18 +4,20 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from src.core.config import settings
-from src.custom_lib.functions import get_db, get_current_active_user, get_current_active_superuser
+from src.custom_lib.functions import (
+    get_db, get_current_active_user,
+    get_current_active_superuser, send_new_account_email
+)
 from src.user import schemas
 from src.user.models import User
 from src.user.repo.user import get_user_by_email, get_user_by_username, is_superuser, get_user_by_id
 from src.core.security import get_hash_password
-from src.custom_lib.utils import send_new_account_email
 
 router = APIRouter()
 
 
 @router.post('/', status_code=201, response_model=schemas.ShowUser)
-def register(request: schemas.UserCreate,
+async def register(request: schemas.UserCreate,
              db: Session = Depends(get_db)) -> Any:
     """
     Register new user
@@ -28,7 +30,7 @@ def register(request: schemas.UserCreate,
     if user_username:
         raise HTTPException(status_code=400, detail=f"User with this email : {request.username} already exist!")
 
-    user = User(
+    user = await User(
         username=request.username,
         email=request.email,
         password=get_hash_password(request.password)
