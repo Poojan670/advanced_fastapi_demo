@@ -28,6 +28,6 @@ def authenticate(db: Session, username: str, password: str) -> Optional[User]:
     user = get_user_by_username(db, username=username)
     if not user:
         return None
-    if not verify_password(password, user.hashed_password):
+    if not verify_password(password, user.password):
         return None
-    return
+    return user

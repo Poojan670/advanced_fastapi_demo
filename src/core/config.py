@@ -34,8 +34,8 @@ class Settings(BaseSettings):
     EMAILS_FROM_NAME: Optional[str] = os.getenv("EMAILS_FROM_NAME")
 
     EMAIL_RESET_TOKEN_EXPIRE_HOURS: int = 48
-    EMAIL_TEMPLATES_DIR: str = "/templates"
-    EMAILS_ENABLED: bool = False
+    EMAIL_TEMPLATES_DIR: str = "templates"
+    EMAILS_ENABLED: bool = os.getenv("EMAILS_ENABLED")
 
     EMAIL_TEST_USER: EmailStr = os.getenv("EMAIL_TEST_USER")
     FIRST_SUPERUSER_USERNAME: str = os.getenv("FIRST_SUPERUSER_USERNAME")

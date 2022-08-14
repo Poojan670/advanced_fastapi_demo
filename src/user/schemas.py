@@ -23,9 +23,12 @@ class UserBase(BaseModel):
 
 # Retrieve User
 class ShowUser(BaseModel):
-    id: str
+    id: int
     username: str
     email: str
+
+    class Config:
+        orm_mode = True
 
 
 # Properties to receive via API on creation
@@ -42,6 +45,9 @@ class UserCreate(BaseModel):
 class ChangePassword(BaseModel):
     new_password: str = Field(..., min_length=5, max_length=15)
     confirm_password: Optional[str] = None
+
+    class Config:
+        orm_mode = True
 
 
 class UpdateUser(BaseModel):

@@ -74,11 +74,11 @@ def get_current_active_superuser(
 
 def send_email(
         email_to: str,
-        subject_template: str = "",
-        html_template: str = "",
-        environment: Dict[str, Any] = {},
+        subject_template: str,
+        html_template: str,
+        environment: Dict[str, Any],
 ) -> None:
-    assert settings.EMAILS_ENABLED, "no provided configuration for email variables"
+
     message = emails.Message(
         subject=JinjaTemplate(subject_template),
         html=JinjaTemplate(html_template),
@@ -92,6 +92,7 @@ def send_email(
     if settings.SMTP_PASSWORD:
         smtp_options["password"] = settings.SMTP_PASSWORD
     response = message.send(to=email_to, render=environment, smtp=smtp_options)
+    print(response)
     logging.info(f"send email result: {response}")
 
 
@@ -135,6 +136,7 @@ def send_new_account_email(email_to: str, username: str, password: str) -> None:
     with open(Path(settings.EMAIL_TEMPLATES_DIR) / "register.mjml") as f:
         template_str = f.read()
     link = settings.SERVER_HOST
+
     send_email(
         email_to=email_to,
         subject_template=subject,

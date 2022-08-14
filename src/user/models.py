@@ -13,9 +13,9 @@ if TYPE_CHECKING:
 class User(CreateInfoMixIn):
     __tablename__ = 'users'
     id = Column(Integer, ForeignKey('createinfomixin.id'), primary_key=True)
-    username = Column(String(10), nullable=False, unique=True)
-    email = Column(String(20), nullable=False, unique=True)
-    password = Column(String(20), nullable=False)
+    username = Column(String(20), nullable=False, unique=True)
+    email = Column(String(100), nullable=False, unique=True)
+    password = Column(String, nullable=False)
     is_active = Column(Boolean(), default=False)
     is_superuser = Column(Boolean(), default=False)
     groups = relationship("CustomGroup",
@@ -25,9 +25,9 @@ class User(CreateInfoMixIn):
 
 class UserDetails(CreateInfoMixIn):
     id = Column(Integer, ForeignKey('createinfomixin.id'), primary_key=True)
-    first_name = Column(String(20))
+    first_name = Column(String(50))
     middle_name = Column(String, nullable=True)
-    last_name = Column(String(20))
+    last_name = Column(String(50))
     full_name = Column(String)
     age = Column(Integer)
     birthday = Column(Date)

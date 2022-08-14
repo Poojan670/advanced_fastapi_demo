@@ -4,6 +4,7 @@ from src.core.config import settings
 from src.user import schemas
 from src.user.models import User
 from src.user.repo.user import get_user_by_email, get_user_by_username
+from src.core.security import get_hash_password
 from . import base
 from .session import engine
 
@@ -25,7 +26,7 @@ def init_db(db: Session) -> None:
         request = schemas.UserBase(
             username=settings.FIRST_SUPERUSER_USERNAME,
             email=settings.FIRST_SUPERUSER_EMAIL,
-            password=settings.FIRST_SUPERUSER_PASSWORD,
+            password=get_hash_password(settings.FIRST_SUPERUSER_PASSWORD),
             is_active=True,
             is_superuser=True,
         )
